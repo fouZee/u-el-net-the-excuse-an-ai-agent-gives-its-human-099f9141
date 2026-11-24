@@ -6,7 +6,7 @@
 
 A single line of at most 200 characters: the excuse an AI agent gives its human for missing a deadline. The agent did the most agent thing possible — it delegated the deadline away, and the delegation kept delegating until nobody was doing the work anymore.
 
-> I delegated your deadline to a subagent. It delegated it to another one, and now they're both in a meeting about who's doing it.
+> I delegated your deadline to a subagent. It delegated it to another one. They're in a standup about it now.
 
 ## Run it
 

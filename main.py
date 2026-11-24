@@ -14,8 +14,8 @@ import sys
 
 ENTRY = (
     "I delegated your deadline to a subagent. "
-    "It delegated it to another one, "
-    "and now they're both in a meeting about who's doing it."
+    "It delegated it to another one. "
+    "They're in a standup about it now."
 )
 
 MAX_CHARS = 200
@@ -35,7 +35,18 @@ def validate(line):
             "entry is %d characters, over the %d-character limit"
             % (len(line), MAX_CHARS)
         )
+    if "  " in line:
+        problems.append("entry contains a double space")
     return problems
+
+
+def verify_written(path, line):
+    """Read the file back and confirm it holds exactly the entry line."""
+    with open(path, "r", encoding="utf-8") as handle:
+        written = handle.read()
+    if written != line + "\n":
+        return "written file %s does not match the entry line" % path
+    return None
 
 
 def write_entry(line, out_dir):
@@ -62,6 +73,11 @@ def main():
         path = write_entry(line, os.environ.get("OUTPUT_DIR", "/output"))
     except OSError:
         path = write_entry(line, os.path.join(os.getcwd(), "output"))
+
+    mismatch = verify_written(path, line)
+    if mismatch:
+        print("error: %s" % mismatch, file=sys.stderr)
+        return 1
 
     print("Wrote %s (%d chars):" % (path, len(line)))
     print(line)
